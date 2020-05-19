@@ -8,9 +8,9 @@ $(function () {
 
             if (data.code == 0) {
                 var zNodes = JSON.parse(JSON.stringify(data.data));
-                console.log(zNodes)
+                //console.log(zNodes)
                 getMenuHTML(0, zNodes);
-                console.log(menus);
+                //console.log(menus);
                 document.getElementById("side-nav").innerHTML = menus;
             }
         });
@@ -79,13 +79,15 @@ function getMenuHTML(id, arry) {
             }
             if (id == 0) {
                 menus += '<i class="iconfont left-nav-li" lay-tips="' + childArry[i].name + '">' + childArry[i].icon + '</i>';
-            }else{
+            } else {
                 menus += '<i class="iconfont">' + childArry[i].icon + '</i>';
             }
             menus += '<cite>';
             menus += childArry[i].name;
             menus += '</cite>';
-            menus += '<i class="iconfont nav_right">&#xe697;</i>';
+            if (GetParentArry(childArry[i].id, arry).length > 0) {
+                menus += '<i class="iconfont nav_right">&#xe697;</i>';
+            }
             menus += '</a>';
             getMenuHTML(childArry[i].id, arry);
             menus += '</li>';
