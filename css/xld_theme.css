@@ -1,0 +1,22 @@
+body{
+    background:#E4E4E4;
+}
+.container{
+    background:#1A449B;
+}
+.left-nav{
+    background:#263035;
+}
+
+.left-nav a{
+    color:#fff;
+}
+.left-nav a.active{
+    background: #1A449B !important;
+    color: #fff !important;
+}
+.left-nav a:hover{
+    background: #212525 !important;
+    color: #fff !important;
+}
+/*2020-05-19*/
