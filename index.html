@@ -21,8 +21,11 @@
         <![endif]-->
     <!--parking_cloud_platform-->
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-    <script src="./js/cloud_platform/common/properties.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/cloud_platform/common/properties.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/cloud_platform/common/local_storage.js"></script>
+    <script type="text/javascript" src="./js/cloud_platform/index/index.js"></script>
     <script type="text/javascript" src="./js/cloud_platform/index/menu.js"></script>
+    <!--End-->
     <script type="text/javascript" src="./js/xadmin.js"></script>
     <script>
         // 是否开启刷新记忆tab功能
@@ -43,7 +46,7 @@
         </div>
         <ul class="layui-nav right" lay-filter="">
             <li class="layui-nav-item">
-                <a href="javascript:;">admin</a>
+                <a href="javascript:;" id="username"></a>
                 <dl class="layui-nav-child">
                     <!-- 二级菜单 -->
                     <dd>
@@ -51,7 +54,7 @@
                     <dd>
                         <a onclick="xadmin.open('切换帐号','http://www.baidu.com')">切换帐号</a></dd>
                     <dd>
-                        <a href="./login.html">退出</a></dd>
+                        <a href="pages/login/login.html">退出</a></dd>
                 </dl>
             </li>
             <!--<li class="layui-nav-item to-index">
