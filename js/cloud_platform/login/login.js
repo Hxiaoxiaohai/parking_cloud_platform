@@ -12,7 +12,7 @@ $(function  () {
                         console.log(data);
                         persist("token", data.data.token);
                         persist("username", data.data.username);
-                        location.href='./../../index.html';
+                        location.href='./index.html';
                     } else {
                         layer.msg("密码错误");
                     }
