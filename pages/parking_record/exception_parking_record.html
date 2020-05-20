@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>停车记录</title>
+    <link rel="stylesheet" href="/assets/css/parking_cms/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://www.layuicdn.com/layui/css/layui.css"  media="all">
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <br />
+                    <div class="demoTable">
+                        停车场简称：
+                        <div class="layui-inline">
+                            <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+                        </div>
+                        <button class="layui-btn" data-type="reload">搜索</button>
+                    </div>
+                </div>
+                <div class="layui-card-header">
+                    <button class="layui-btn layui-btn-danger" onclick="delAll()">
+                        <i class="layui-icon"></i>批量删除</button>
+                    <button class="layui-btn" onclick="xadmin.open('添加用户','./order-add.html',800,600)">
+                        <i class="layui-icon"></i>添加</button>
+                </div>
+                <div class="layui-card-body ">
+                    <table class="layui-hide" id="data_list" lay-filter="data_list"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript" src="../../lib/jQuery/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="../../js/cloud_platform/common/properties.js" charset="utf-8"></script>
+<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+
+<!--toolbar-->
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckData" onclick="refresh()">刷新</button>
+    </div>
+</script>
+<!--layui-操作-->
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="detail">详情</a>
+</script>
+<script>
+    layui.use('table', function(){
+        //刷新数据表格
+        refresh = function (item) {
+            $("#testReload").empty();
+            table.reload("testReload", { //此处是上文提到的 初始化标识id
+                page:{
+                    curr: 1
+                }
+            });
+        };
+
+        var table = layui.table;
+        table.render({
+            elem: '#data_list'
+            ,url: url + '/cp/exceptionParkingRecordData'
+            ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+            ,defaultToolbar: ['filter']
+            ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            ,cols: [
+                [
+                    {field:'id', title: '序号', sort: true, align:'center', width:100, type: 'numbers'}
+                    ,{field: '', title: '停车状态', align: 'center',
+                    templet: function (data) {
+                        return "<img src=\"/assets/images/cms/exception.png\" /><span>异常</span>";
+                    }
+                }
+                    ,{field:'parking_name', title: '停车场简称', align:'center'}
+                    ,{field:'full_address', title: '停车场地址', align:'center'}
+                    ,{field:'entry_time', title: '异常时间', align:'center'}
+                    ,{field:'picture_url', title: '照片', align:'center',
+                    templet:function (data) {
+                        return '<a style="cursor: pointer"><img src="' + data.picture_url + '" width="64px" height="36px" class="layui-upload-img" onclick="previewImg(this)"></a>';
+                    }
+                }
+                    /*,{fixed: 'right', title:'操作', toolbar: '#barDemo', align:'center', width:150}*/
+                ]
+            ]
+            ,limits:[5, 10, 20]
+            ,page:true
+            ,id: 'testReload'
+        });
+        //监听工具条
+        table.on('tool(data_list)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'detail'){
+                // layer.msg('ID：'+ data.id + ' 的查看操作');
+                parent.layer.open({
+                    type: 2,
+                    area: ['850px', '90%'],
+                    title:'停车记录详情',
+                    content: '/cms/parkingRecordDetail/' + data.id //这里content是一个普通的String
+                });
+            }
+        });
+        var $ = layui.$, active = {
+            reload: function(){
+                var demoReload = $('#demoReload');
+                console.log(demoReload.val())
+                //执行重载
+                table.reload('testReload', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: {
+                        parking_name: demoReload.val()
+                    }
+                }, 'data');
+            }
+        };
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+    //照片预览
+    function previewImg(obj) {
+        var temp_url= obj.src.split("thumb_");
+        var origin_image = temp_url[0] + temp_url[1];
+        var img = new Image();
+        img.src = origin_image;
+        var imgHtml = "<img src='" + origin_image + "' width='854px' height='480px'/>";
+        //弹出层
+        layer.open({
+            type: 1,
+            shade: 0.8,
+            offset: 'auto',
+            area: [854 + 'px',528+'px'],
+            shadeClose:true,
+            scrollbar: false,
+            title: "照片预览", //不显示标题
+            content: imgHtml, //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+            cancel: function () {
+                //layer.msg('捕获就是从页面已经存在的元素上，包裹layer的结构', { time: 5000, icon: 6 });
+            }
+        });
+    }
+</script>
+</body>
+</html>
