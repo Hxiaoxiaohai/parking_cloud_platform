@@ -37,6 +37,7 @@
 <script type="text/javascript" src="../../lib/jQuery/jquery-3.1.1.min.js"></script>
 <script type="text/javascript" src="../../js/cloud_platform/common/properties.js" charset="utf-8"></script>
 <script charset="utf-8" src="../../lib/layui/layui.js"></script>
+<script type="text/javascript" src="../../js/cloud_platform/common/local_storage.js" charset="utf-8"></script>
 
 <!--toolbar-->
 <script type="text/html" id="toolbarDemo">
@@ -88,19 +89,20 @@
             var data = obj.data;
             if(obj.event === 'detail'){
                 // layer.msg('ID：'+ data.id + ' 的查看操作');
-                parent.layer.open({
+                layer.open({
                     type: 2,
                     area: ['850px', '90%'],
                     title:'停车场详情',
-                    content: '/cms/parkingDetail/' + data.id //这里content是一个普通的String
+                    content: './parking_detail.html'//这里content是一个普通的String
                 });
             }  else if(obj.event === 'edit'){
-                presist("edit_id", data.id);
-                parent.layer.open({
+                console.log("update_id ==="+ data.id);
+                persist("update_id", data.id);
+                layer.open({
                     type: 2,
                     area: ['850px', '90%'],
                     title:'编辑停车场信息',
-                    content: '/cms/updateParking/' + data.id //这里content是一个普通的String
+                    content: './update_parking.html' //这里content是一个普通的String
                 });
             }
         });
@@ -127,11 +129,11 @@
     });
     //新增
     function newWindows() {
-        parent.layer.open({
+        layer.open({
             type: 2,
             area: ['850px', '90%'],
             title:'新增停车场',
-            content: 'add_parking.html',
+            content: './add_parking.html',
         });
     }
 </script>

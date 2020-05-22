@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../css/cloud_platform/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../css/cloud_platform/common/pop_windows.css" />
+</head>
+<body>
+    <form class="form-horizontal" role="form">
+        <div id="chooseRegion" class="form-group">
+            <label for="parking" class="col-sm-2 control-label">停车场</label>
+            <div class="col-xs-2">
+                <select class="form-control" id="parking" onchange="getParkingId();">
+                    <option>请选择</option>
+                    <!--<option th:each="p:${parkingList}" th:text="${p.parking_name}" th:value="${p.id}"></option>-->
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="terminalName" class="col-sm-2 control-label">终端名称</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="terminal_name" placeholder="终端名称" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="terminalAddress" class="col-sm-2 control-label">终端地址</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="terminal_address" placeholder="终端地址" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="button" class="btn btn-primary" id="add_terminal">新增</button>
+                <!--<button type="button" class="btn default" onclick="closeWindow()">关闭</button>-->
+            </div>
+        </div>
+    </form>
+
+    <script type="text/javascript" src="../../lib/jQuery/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="../../js/cloud_platform/common/properties.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../js/cloud_platform/common/local_storage.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../js/cloud_platform/device_management/insert_terminal.js" charset="utf-8"></script>
+</body>
+</html>

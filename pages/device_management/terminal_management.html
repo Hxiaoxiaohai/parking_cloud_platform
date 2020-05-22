@@ -13,10 +13,10 @@
         <div class="layui-col-md12">
             <div class="layui-card">
                 <br />
-                <div class="layui-card-header">
+                <!--<div class="layui-card-header">
                     <button class="layui-btn" onclick="xadmin.open('添加用户','./order-add.html',800,600)">
                         <i class="layui-icon"></i>添加</button>
-                </div>
+                </div>-->
                 <div class="layui-card-body ">
                     <div class="demoTable">
                         终端地址：
@@ -85,7 +85,7 @@
                     content: '/cms/terminalDetail/' + data.id //这里content是一个普通的String
                 });
             }  else if(obj.event === 'edit'){
-                presist("edit_id", data.id);
+                presist("update_id", data.id);
                 parent.layer.open({
                     type: 2,
                     area: ['850px', '90%'],
@@ -125,11 +125,11 @@
     });
     //新增
     function newWindows() {
-        parent.layer.open({
+        layer.open({
             type: 2,
             area: ['850px', '90%'],
-            title:'新增停车场',
-            content: '/cms/addTerminal',
+            title:'新增终端',
+            content: './insert_terminal.html',
         });
     }
 </script>
