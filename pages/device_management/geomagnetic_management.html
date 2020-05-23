@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>地磁管理</title>
-    <link rel="stylesheet" href="/assets/css/parking_cms/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://www.layuicdn.com/layui/css/layui.css"  media="all">
+    <link rel="stylesheet" href="../../css/cloud_platform/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../css/cloud_platform/common/pop_windows.css" />
+    <link rel="stylesheet" href="../../lib/layui/css/layui.css"  media="all">
 </head>
 <body>
 
@@ -13,10 +14,10 @@
         <div class="layui-col-md12">
             <div class="layui-card">
                 <br />
-                <div class="layui-card-header">
+                <!--<div class="layui-card-header">
                     <button class="layui-btn" onclick="xadmin.open('添加用户','./order-add.html',800,600)">
                         <i class="layui-icon"></i>添加</button>
-                </div>
+                </div>-->
                 <div class="layui-card-body ">
                     <div class="demoTable">
                         地磁地址：
@@ -37,7 +38,8 @@
 
 <script type="text/javascript" src="../../lib/jQuery/jquery-3.1.1.min.js"></script>
 <script type="text/javascript" src="../../js/cloud_platform/common/properties.js" charset="utf-8"></script>
-<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="../../js/cloud_platform/common/local_storage.js" charset="utf-8"></script>
+<script type="text/javascript" src="../../lib/layui/layui.js" charset="utf-8"></script>
 
 <!--toolbar-->
 <script type="text/html" id="toolbarDemo">
@@ -81,19 +83,19 @@
             var data = obj.data;
             if(obj.event === 'detail'){
                 // layer.msg('ID：'+ data.id + ' 的查看操作');
-                parent.layer.open({
+                layer.open({
                     type: 2,
                     area: ['850px', '90%'],
                     title:'地磁详情',
-                    content: '/cms/geomagneticDetail/' + data.id //这里content是一个普通的String
+                    content: './geomagnetic_detail.html' //这里content是一个普通的String
                 });
             }  else if(obj.event === 'edit'){
-                presist("edit_id", data.id);
-                parent.layer.open({
+                persist("update_id", data.id);
+                layer.open({
                     type: 2,
                     area: ['850px', '90%'],
                     title:'编辑地磁信息',
-                    content: '/cms/updateGeomagnetic/' + data.id //这里content是一个普通的String
+                    content: './update_geomagnetic.html'//这里content是一个普通的String
                 });
             }
         });
@@ -120,11 +122,11 @@
     });
     //新增
     function newWindows() {
-        parent.layer.open({
+        layer.open({
             type: 2,
             area: ['850px', '90%'],
             title:'新增停车场',
-            content: '/cms/addGeomagnetic',
+            content: './insert_geomagnetic.html',
         });
     }
 </script>

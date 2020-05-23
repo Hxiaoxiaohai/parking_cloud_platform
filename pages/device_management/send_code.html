@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>发送指令</title>
+    <link rel="stylesheet" href="../../css/cloud_platform/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../css/cloud_platform/common/pop_windows.css" />
+    <link rel="stylesheet" href="../../lib/layui/css/layui.css"  media="all">
+    <style>
+        #left{
+            padding: 50px 30px 0 30px;
+            float: left;
+            width: 47%;
+        }
+        #middle{
+            margin: 20px 0 20px 0;
+            float:left;
+            width: 1px;
+            height: 800px;
+            background: #CECECE;
+        }
+        #right{
+            padding: 50px 30px 0 30px;
+            float: left;
+            width: 47%;
+        }
+    </style>
+</head>
+<body>
+<form role="form">
+    <div id="left">
+        <div class="form-group">
+            <label for="code">指令：</label>
+            <textarea class="form-control" rows="12" id="code"></textarea>
+        </div>
+        <div class="form-group">
+            <button type="button" class="btn btn-primary" id="send_code">发送</button>
+        </div>
+    </div>
+    <div id="middle"></div>
+    <div id="right">
+        <div class="form-group">
+            <label for="response">回应：</label>
+            <textarea class="form-control" rows="12" id="response"></textarea>
+        </div>
+        <div class="form-group">
+            <button type="button" class="btn btn-primary" id="clear">清空</button>
+        </div>
+    </div>
+</form>
+<script src="/assets/jQuery/jquery-1.9.1.min.js"></script>
+<script src="/assets/js/parkingCms/deviceManagement/addGeomagnetci.js" type="text/javascript"></script>
+<script src="https://www.layuicdn.com/layui/layui.js" charset="utf-8"></script>
+<script src="/assets/js/parkingCms/cookies.js" type="text/javascript"></script>
+<script>
+    $('#send_code').on('click', function(){
+        var terminal_address = fetch("terminal_address");
+        var code = $("#code").val();
+        code = code.replace(/\s+/g,"");
+
+        $.post("/cms/sendCodeData",{
+                terminal_address: terminal_address,
+                code :code
+            },
+            function(data,status){
+                // console.log("code===" + data);
+                /*if (data.code == 0) {
+                    //调用父页面的刷新指定的iframe方法
+                    var redirect_url = "/cms/userManagement";
+                    window.parent.refrashiframe(redirect_url);
+                    //关闭页面
+                    closeWindow();
+                } else {
+                    alert("用户名已存在");
+                }*/
+            }
+        );
+    });
+
+    //WebSocket
+    var socket;
+    if (typeof (WebSocket) == "undefined") {
+        console.log("遗憾：您的浏览器不支持WebSocket");
+    } else {
+        console.log("恭喜：您的浏览器支持WebSocket");
+
+        //实现化WebSocket对象
+        //指定要连接的服务器地址与端口建立连接
+        //注意ws、wss使用不同的端口。我使用自签名的证书测试，
+        //无法使用wss，浏览器打开WebSocket时报错
+        //ws对应http、wss对应https。
+        socket = new WebSocket("wss://www.xyzparking.com/websocket/manager");
+        //连接打开事件
+        socket.onopen = function() {
+            console.log("Socket 已打开");
+            // socket.send("XLDDEV2019112813230");
+        };
+        //收到消息事件
+        socket.onmessage = function(msg) {
+            var jsonString = msg.data;
+            console.log("html-收到=" + jsonString);
+            try{
+                var jsonObj = JSON.parse(jsonString);
+                if (jsonObj.order == 105) {
+                    var formatJson = JSON.stringify(jsonObj.data, null, "\t");
+                    $("#response").val(formatJson);
+                }
+                console.log("json对象" + jsonObj.data);
+            } catch(e){
+                console.log("异常=" + e);
+            }
+            if (msg.data=="abc") {
+                alert("ok");
+            }
+        };
+
+        //连接关闭事件
+        socket.onclose = function() {
+            console.log("Socket已关闭");
+        };
+        //发生了错误事件
+        socket.onerror = function() {
+            alert("Socket发生了错误");
+        }
+
+        //窗口关闭时，关闭连接
+        window.unload=function() {
+            socket.close();
+        };
+    }
+
+    $(document).ready(function(){
+        $("#clear").click(function(){
+            $("#response").val("");
+        });
+    });
+</script>
+</body>
+</html>
