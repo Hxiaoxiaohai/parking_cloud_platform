@@ -1,34 +1,64 @@
 $(document).ready(function(){
-    $.get(
-        url + '/cp/getProvinceList',
+    $.get(url + '/cp/getProvinceList',
         function (data) {
-            console.log(data);
+            //省份列表
             for (var i = 0; i < data.length; i++) {
+                console.log("province_id ===" + data[i].id);
                 $("#province").append('<option value="'+data[i].id+'">' + data[i].name + '</option>');
                 // console.log(data[i].name);
             }
-        })
 
-    var parking_id = fetch("update_id");
-    console.log("parking_id===" + parking_id);
-    $.get(url + "/cp/getParkingDataByParkingId",
-        {parking_id:parking_id},
-        function(data,status){
-            if (data.data.street_id == 0){
-                $("#street").hide();
-            }
+            var parking_id = fetch("update_id");
+            $.get(url + "/cp/getParkingDataByParkingId",
+                {parking_id:parking_id},
+                function(data,status){
+                    //城市列表
+                    $.get(url + '/cp/getCityList',
+                        {id : data.data.province_id},
+                        function (data) {
+                            for (var i = 0; i < data.length; i++){
+                                $("#city").append('<option value="'+data[i].id+'">' + data[i].name + '</option>');
+                            }
+                        }
+                    )
 
-            console.log("province_id ===" + data.data.province_id);
-            $("#province").find("option[value = '"+ data.data.province_id +"']").attr("selected","selected");  //更改selected
-            $("#city").find("option[value = '"+ data.data.city_id +"']").attr("selected","selected");
-            $("#district").find("option[value = '"+ data.data.district_id +"']").attr("selected","selected");
-            $("#street").find("option[value = '"+ data.data.street_id +"']").attr("selected","selected");
-            $("#parking_name").val(data.data.parking_name);
-            $("#latitude").val(data.data.latitude);
-            $("#longitude").val(data.data.longitude);
-            $("#detailAddress").val(data.data.detail_address);
+                    $("#city").find("option[value = '"+ data.data.city_id +"']").attr("selected","selected");
+                    //县区列表
+                    $.get(url + '/cp/getDistrictList',
+                        {id : data.data.city_id},
+                        function (data) {
+                            for (var i = 0; i < data.length; i++){
+                                $("#district").append('<option value="'+data[i].id+'">' + data[i].name + '</option>');
+                            }
+                        }
+                    )
 
-    });
+                    //街道列表
+                    $.get(url + '/cp/getStreetList',
+                        {id : data.data.district_id},
+                        function (data) {
+                            for (var i = 0; i < data.length; i++){
+                                $("#street").append('<option value="'+data[i].id+'">' + data[i].name + '</option>');
+                            }
+                        }
+                    )
+
+                    console.log("地址数据===" + data.data);
+                    if (data.data.street_id == 0){
+                        $("#street").hide();
+                    }
+                    console.log("city_id ===" + data.data.city_id);
+                    $("#province").find("option[value = '"+ data.data.province_id +"']").attr("selected","selected");  //更改selected
+                    $("#city").find("option[value = '"+ data.data.city_id +"']").attr("selected","selected");
+                    $("#district").find("option[value = '"+ data.data.district_id +"']").attr("selected","selected");
+                    $("#street").find("option[value = '"+ data.data.street_id +"']").attr("selected","selected");
+                    $("#parking_name").val(data.data.parking_name);
+                    $("#latitude").val(data.data.latitude);
+                    $("#longitude").val(data.data.longitude);
+                    $("#detailAddress").val(data.data.detail_address);
+
+            });
+    })
 });
 
 function getProvinceID(){

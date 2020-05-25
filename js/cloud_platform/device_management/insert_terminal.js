@@ -1,3 +1,4 @@
+//停车场列表
 $(function () {
     $.get(url + "/cp/parkingList",
         function (data) {

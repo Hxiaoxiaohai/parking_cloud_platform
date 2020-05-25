@@ -1,8 +1,28 @@
-$(document).ready(function(){
-    var terminal_id = fetch("edit_id");
+/*$(document).ready(function(){
+    var terminal_id = fetch("update_id");
     $.get("/cms/getTerminalDataTerminalId",
         {terminal_id:terminal_id},
-        function(data,status){
+        function(data){
+            $("#parking").find("option[value = '"+ data.data.parking_id +"']").attr("selected","selected");  //更改selected
+            $("#terminal_name").val(data.data.terminal_name);
+            $("#terminal_address").val(data.data.terminal_address);
+    });
+});*/
+
+$(function () {
+    $.get(url + '/cp/parkingList',
+        function (data) {
+            for (var i = 0; i < data.length; i++) {
+                $("#parking").append('<option value="'+data[i].id+'">' + data[i].parking_name + '</option>');
+            }
+    })
+})
+
+$(document).ready(function(){
+    var terminal_id = fetch("update_id");
+    $.get(url + "/cp/getTerminalDataTerminalId",
+        {terminal_id:terminal_id},
+        function(data){
             $("#parking").find("option[value = '"+ data.data.parking_id +"']").attr("selected","selected");  //更改selected
             $("#terminal_name").val(data.data.terminal_name);
             $("#terminal_address").val(data.data.terminal_address);

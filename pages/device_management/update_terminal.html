@@ -13,7 +13,6 @@
         <div class="col-xs-4">
             <select class="form-control" id="parking" onchange="getParkingId();">
                 <option>请选择</option>
-                <option th:each="p:${parkingList}" th:text="${p.parking_name}" th:value="${p.id}"></option>
             </select>
         </div>
     </div>

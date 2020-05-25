@@ -1,6 +1,29 @@
+var geomagnetic_id = fetch("update_id");
+
+//停车场列表
+$(function () {
+    $.get(url + "/cp/parkingList",
+        function (data) {
+            console.log("停车场列表===" + data.data);
+            for (var i = 0; i < data.length; i++) {
+                $("#parking").append('<option value="'+data[i].id+'">' + data[i].parking_name + '</option>');
+            }
+        })
+})
+
+
+//终端列表-根据地磁id获取终端列表
+$.get(url + '/cp/getTerminalListByGeomagneticId',
+    {   geomagnetic_id : geomagnetic_id },
+    function (data) {
+        for (var i = 0; i < data.length; i++) {
+            $("#terminal").append('<option value="'+data[i].id+'">' + data[i].terminal_name + '</option>');
+            console.log("terminal_name ===" + data[i].terminal_name);
+        }
+})
+
 //根据地磁id获取地磁数据
 $(document).ready(function(){
-    var geomagnetic_id = fetch("update_id");
     console.log("geomagnetic_id" + geomagnetic_id);
     $.get(url + "/cp/getGeomagneticDataByGeomagneticId",
         {geomagnetic_id:geomagnetic_id},
@@ -12,6 +35,17 @@ $(document).ready(function(){
             $("#geomagnetic_address").val(data.data.geomagnetic_address);
         });
 });
+
+//终端列表
+$(function () {
+    $.get(url + "/cp/getTerminalListByParkingId",
+        function (data) {
+            for (var i = 0; i < data.length; i++){
+                $("terminal").append('<option value="'+data[i].id+'">' + data[i].parking_name + '</option>');
+            }
+        })
+})
+
 
 //获取终端列表
 function getParkingId() {
