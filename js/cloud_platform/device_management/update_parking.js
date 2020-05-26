@@ -1,66 +1,82 @@
+//清空选项
+$(function () {
+    $("#province").empty();
+    $("#city").empty();
+    $("#district").empty();
+    $("#street").empty();
+});
+
+//停车场id
+var parking_id = fetch("update_id");
+
+//省份列表
 $(document).ready(function(){
     $.get(url + '/cp/getProvinceList',
         function (data) {
             //省份列表
             for (var i = 0; i < data.length; i++) {
-                console.log("province_id ===" + data[i].id);
                 $("#province").append('<option value="'+data[i].id+'">' + data[i].name + '</option>');
-                // console.log(data[i].name);
             }
-
-            var parking_id = fetch("update_id");
-            $.get(url + "/cp/getParkingDataByParkingId",
-                {parking_id:parking_id},
-                function(data,status){
-                    //城市列表
-                    $.get(url + '/cp/getCityList',
-                        {id : data.data.province_id},
-                        function (data) {
-                            for (var i = 0; i < data.length; i++){
-                                $("#city").append('<option value="'+data[i].id+'">' + data[i].name + '</option>');
-                            }
-                        }
-                    )
-
-                    $("#city").find("option[value = '"+ data.data.city_id +"']").attr("selected","selected");
-                    //县区列表
-                    $.get(url + '/cp/getDistrictList',
-                        {id : data.data.city_id},
-                        function (data) {
-                            for (var i = 0; i < data.length; i++){
-                                $("#district").append('<option value="'+data[i].id+'">' + data[i].name + '</option>');
-                            }
-                        }
-                    )
-
-                    //街道列表
-                    $.get(url + '/cp/getStreetList',
-                        {id : data.data.district_id},
-                        function (data) {
-                            for (var i = 0; i < data.length; i++){
-                                $("#street").append('<option value="'+data[i].id+'">' + data[i].name + '</option>');
-                            }
-                        }
-                    )
-
-                    console.log("地址数据===" + data.data);
-                    if (data.data.street_id == 0){
-                        $("#street").hide();
-                    }
-                    console.log("city_id ===" + data.data.city_id);
-                    $("#province").find("option[value = '"+ data.data.province_id +"']").attr("selected","selected");  //更改selected
-                    $("#city").find("option[value = '"+ data.data.city_id +"']").attr("selected","selected");
-                    $("#district").find("option[value = '"+ data.data.district_id +"']").attr("selected","selected");
-                    $("#street").find("option[value = '"+ data.data.street_id +"']").attr("selected","selected");
-                    $("#parking_name").val(data.data.parking_name);
-                    $("#latitude").val(data.data.latitude);
-                    $("#longitude").val(data.data.longitude);
-                    $("#detailAddress").val(data.data.detail_address);
-
-            });
     })
 });
 
+//城市列表
+$(function () {
+    $.get(url + "/cp/getCityListByParkingId",
+        {parking_id:parking_id},
+        function(data,status){
+            for (var i = 0; i < data.length; i++){
+                $("#city").append('<option value="'+data[i].id+'">' + data[i].name + '</option>');
+            }
+    });
+});
+
+//县区列表
+$(function () {
+    $.get(url + '/cp/getDistrictListByParkingId',
+        {parking_id:parking_id},
+        function (data) {
+            for (var i = 0; i < data.length; i++){
+                console.log("县区id===" + data[i].id + "名称===" + data[i].name);
+                $("#district").append('<option value="'+data[i].id+'">' + data[i].name + '</option>');
+            }
+        }
+    )
+});
+
+//街道列表
+$(function () {
+    $.get(url + '/cp/getStreetListByParkingId',
+        {parking_id:parking_id},
+        function (data) {
+            for (var i = 0; i < data.length; i++){
+                $("#street").append('<option value="'+data[i].id+'">' + data[i].name + '</option>');
+            }
+        }
+    )
+});
+
+//获取停车场数据
+$(document).ready(function(){
+    $.get(url + "/cp/getParkingDataByParkingId",
+        {parking_id:parking_id},
+        function(data,status){
+            console.log("停车场数据===" + data.data.province_id);
+            if (data.data.street_id == 0){
+                $("#street").hide();
+            }
+            $("#province").find("option[value = '"+ data.data.province_id +"']").attr("selected","selected");  //更改selected
+            $("#city").find("option[value = '"+ data.data.city_id +"']").attr("selected","selected");
+            $("#district").find("option[value = '"+ data.data.district_id +"']").attr("selected","selected");
+            $("#street").find("option[value = '"+ data.data.street_id +"']").attr("selected","selected");
+            $("#parking_name").val(data.data.parking_name);
+            $("#latitude").val(data.data.latitude);
+            $("#longitude").val(data.data.longitude);
+            $("#detailAddress").val(data.data.detail_address);
+        });
+});
+
+//获取选择的省份
 function getProvinceID(){
     var province_id = $("#province option:selected").val();
     var province = $("#province option:selected").text();
@@ -80,6 +96,7 @@ function getProvinceID(){
     return province_info;
 }
 
+//获取选择的城市
 function getCityID(){
     var city_id = $("#city option:selected").val();
     var city = $("#city option:selected").text();
@@ -100,6 +117,7 @@ function getCityID(){
     return city_info;
 }
 
+//获取选择的县区
 function getDistrictID(){
     var district_id = $("#district option:selected").val();
     var district = $("#district option:selected").text();
@@ -126,6 +144,7 @@ function getDistrictID(){
     return district_info;
 }
 
+//获取选择的街道
 function getStreetID(){
     var street_id = $("#street option:selected").val();
     var street = $("#street option:selected").text();
@@ -133,6 +152,7 @@ function getStreetID(){
     return street_info;
 }
 
+//更新数据
 $(function () {
     $("#update_parking").click(function (event) {
         //post数据
