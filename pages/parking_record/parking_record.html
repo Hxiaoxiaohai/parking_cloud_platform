@@ -111,8 +111,11 @@
                     ,{field:'car_number', title: '车牌号', width: 120, align:'center'}
                     ,{field:'picture_url', title: '照片', align:'center', width: 120,
                         templet:function (data) {
-                            console.log("图片地址===" + data.picture_url);
-                            return '<a style="cursor: pointer"><img src="' + data.picture_url + '" width="64px" height="36px" class="layui-upload-img" onclick="previewImg(this)"></a>';
+                            if (profile == "pro"){
+                                var picture_url = "https://www.xyzparking.com" + data.picture_url;
+                            }
+                            console.log("图片地址===" + picture_url);
+                            return '<a style="cursor: pointer"><img src="' + picture_url + '" width="64px" height="36px" class="layui-upload-img" onclick="previewImg(this)"></a>';
                     }
                 }
                     ,{fixed: 'right', title:'操作', toolbar: '#barDemo', align:'center', width:120}
