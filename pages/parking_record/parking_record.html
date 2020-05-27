@@ -85,33 +85,34 @@
                     ,{field:'car_state', title: '停车状态', width:130, align:'center',
                     templet:function (data) {
                         if(data.car_state == 0){
-                            return "<img src=\"/assets/images/cms/parking.png\" /><span>正在停车</span>";
+                            return "<img src=\"../../images/cloud_platform/parking_record/exception.png\" /><span>正在停车</span>";
                         }
                         if (data.car_state == 1){
-                            return "<img src=\"/assets/images/cms/finished_parking.png\" /><span>完成停车</span>";
+                            return "<img src=\"../../images/cloud_platform/parking_record/finished_parking.png\" /><span>完成停车</span>";
                         }
                         if (data.car_state == 3){
-                            return "<img src=\"/assets/images/cms/exception.png\" /><span>异常停车</span>";
+                            return "<img src=\"../../images/cloud_platform/parking_record/parking.png\" /><span>异常停车</span>";
                         }
                     }
                 }
                     ,{field:'entry_time', title: '进入停车场时间', width: 180, align:'center'}
                     ,{field:'upload_time', title: '离开停车场时间', width: 180, align:'center',
-                    templet:function (data) {
-                        if(data.upload_time == "0000-00-00 00:00:00"){
-                            return "<span></span>";
-                        } else {
-                            return "<span>" + data.upload_time + "</span>";
+                        templet:function (data) {
+                            if(data.upload_time == "0000-00-00 00:00:00"){
+                                return "<span></span>";
+                            } else {
+                                return "<span>" + data.upload_time + "</span>";
+                            }
                         }
                     }
-                }
                     ,{field:'duration', title: '停车时长', width: 200, align:'center'}
                     ,{field:'full_address', title: '停车场地址', align:'center'}
                     ,{field:'geomagnetic_address', title: '地磁地址',width: 160, align:'center'}
                     ,{field:'car_number', title: '车牌号', width: 120, align:'center'}
                     ,{field:'picture_url', title: '照片', align:'center', width: 120,
-                    templet:function (data) {
-                        return '<a style="cursor: pointer"><img src="' + data.picture_url + '" width="64px" height="36px" class="layui-upload-img" onclick="previewImg(this)"></a>';
+                        templet:function (data) {
+                            console.log("图片地址===" + data.picture_url);
+                            return '<a style="cursor: pointer"><img src="' + data.picture_url + '" width="64px" height="36px" class="layui-upload-img" onclick="previewImg(this)"></a>';
                     }
                 }
                     ,{fixed: 'right', title:'操作', toolbar: '#barDemo', align:'center', width:120}

@@ -56,6 +56,25 @@ $(function () {
     )
 });
 
+//获取城市、县区、街道列表
+/*$(function () {
+    $.get(url + '/cp/getCityDistrictStreetListByParkingId',
+        {parking_id : parking_id},
+        function (data) {
+            console.log("together ===" + data.data.district_list);
+            for (var i = 0; i < data.data.city_list.length; i++){
+                $("#city").append('<option value="'+data.data.city_list[i].id+'">' + data.data.city_list[i].name + '</option>');
+            }
+            for (var j = 0; j < data.data.district_list.length; j++){
+                $("#district").append('<option value="'+data.data.district_list[j].id+'">' + data.data.district_list[j].name + '</option>');
+            }
+            for (var k = 0; k < data.data.street_list.length; k++){
+                $("#street").append('<option value="'+data.data.street_list[k].id+'">' + data.data.street_list[k].name + '</option>');
+            }
+    })
+})*/
+
+
 //获取停车场数据
 $(document).ready(function(){
     $.get(url + "/cp/getParkingDataByParkingId",
@@ -143,6 +162,9 @@ function getDistrictID(){
         });
     return district_info;
 }
+
+
+
 
 //获取选择的街道
 function getStreetID(){
