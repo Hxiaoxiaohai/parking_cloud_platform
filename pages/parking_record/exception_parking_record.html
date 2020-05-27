@@ -74,7 +74,7 @@
                     {field:'id', title: '序号', sort: true, align:'center', width:100, type: 'numbers'}
                     ,{field: '', title: '停车状态', align: 'center',
                     templet: function (data) {
-                        return "<img src=\"/assets/images/cms/exception.png\" /><span>异常</span>";
+                        return "<img src=\"../../images/cloud_platform/parking_record/exception.png\" /><span>异常</span>";
                     }
                 }
                     ,{field:'parking_name', title: '停车场简称', align:'center'}
@@ -82,7 +82,10 @@
                     ,{field:'entry_time', title: '异常时间', align:'center'}
                     ,{field:'picture_url', title: '照片', align:'center',
                     templet:function (data) {
-                        return '<a style="cursor: pointer"><img src="' + data.picture_url + '" width="64px" height="36px" class="layui-upload-img" onclick="previewImg(this)"></a>';
+                        if (profile == "pro"){
+                            var picture_url = "https://www.xyzparking.com" + data.picture_url;
+                        }
+                        return '<a style="cursor: pointer"><img src="' + picture_url + '" width="64px" height="36px" class="layui-upload-img" onclick="previewImg(this)"></a>';
                     }
                 }
                     /*,{fixed: 'right', title:'操作', toolbar: '#barDemo', align:'center', width:150}*/

@@ -85,13 +85,13 @@
                     ,{field:'car_state', title: '停车状态', width:130, align:'center',
                     templet:function (data) {
                         if(data.car_state == 0){
-                            return "<img src=\"../../images/cloud_platform/parking_record/exception.png\" /><span>正在停车</span>";
+                            return "<img src=\"../../images/cloud_platform/parking_record/parking.png\" /><span>正在停车</span>";
                         }
                         if (data.car_state == 1){
                             return "<img src=\"../../images/cloud_platform/parking_record/finished_parking.png\" /><span>完成停车</span>";
                         }
                         if (data.car_state == 3){
-                            return "<img src=\"../../images/cloud_platform/parking_record/parking.png\" /><span>异常停车</span>";
+                            return "<img src=\"../../images/cloud_platform/parking_record/exception.png\" /><span>异常停车</span>";
                         }
                     }
                 }
